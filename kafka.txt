@@ -1,0 +1,27 @@
+starting kafka step by step
+
+step-1 start the zookeeper to collect the metadata of kafka like log files.
+bin/zookeeper-server-start.sh config/zookeeper.properties
+
+setp-2 New page start the kafka file
+bin/kafka-server-start.sh config/server.properties
+
+step-3 New page Enter the new topic like employee,customers,sales,any.. and run
+bin/kafka-topics.sh --create \
+--topic employee-topic \
+--bootstrap-server localhost:9092 \
+--partitions 1 \
+--replication-factor 1
+
+step-4 start the producer 
+bin/kafka-console-producer.sh \
+--topic employee-topic \
+--bootstrap-server localhost:9092
+
+step-5 New page start the consumer.
+bin/kafka-console-consumer.sh \
+--topic employee-topic \
+--bootstrap-server localhost:9092 \
+--from-beginning
+
+while ending the kafka use ctrl+c follow the order consumer->producer, topic->kafka->zookeeper
