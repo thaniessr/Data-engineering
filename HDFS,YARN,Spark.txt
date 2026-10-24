@@ -1,0 +1,17 @@
+install HADOOP system in Linux
+
+sudo apt update
+sudo apt install openjdk-11-jdk ssh -y
+java -version
+
+Start the storage layer (HDFS):
+   start-dfs.sh
+Start the job-running layer (YARN):
+   start-yarn.sh
+/
+Start the hdfs and yarn same time:
+  start-all.sh
+
+Check everything is running:
+jps
+
