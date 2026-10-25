@@ -56,6 +56,9 @@ Enter passphrase (empty for no passphrase): "enter"
 mv ~/id_rsa ~/.ssh/
 mv ~/id_rsa.pub ~/.ssh/
 cd ..
+
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys - Add the public key to authorized_keys
+
 Set SSH permissions
 chmod 700 ~/.ssh
 chmod 600 ~/.ssh/authorized_keys
@@ -173,3 +176,17 @@ Start the hdfs and yarn same time:
 Check everything is running:
 jps
 
+NameNode
+DataNode
+SecondaryNameNode
+ResourceManager
+NodeManager
+Jps
+
+Test HDFS by creating a directory and uploading a file:
+hdfs dfs -mkdir -p /user/$USER
+
+echo "Hello Hadoop HDFS" > ~/test.txt - create a localfiles
+hdfs dfs -put ~/test.txt /user/$USER/ - Upload the file:
+hdfs dfs -ls /user/$USER - list the file
+hdfs dfs -cat /user/$USER/test.txt - Read the file from HDFS
