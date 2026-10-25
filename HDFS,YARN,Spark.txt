@@ -3,8 +3,10 @@ install HADOOP system in Linux
 
 sudo apt update 
 sudo apt install openjdk-11-jdk ssh -y - install java
+or
 sudo apt update
 sudo apt install openjdk-8-jdk openssh-server openssh-client -y
+
 java -version
 ========================
 
