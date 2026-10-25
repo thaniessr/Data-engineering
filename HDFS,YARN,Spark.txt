@@ -1,8 +1,10 @@
 install HADOOP system in Linux
 
 
+sudo apt update 
+sudo apt install openjdk-11-jdk ssh -y - install java
 sudo apt update
-sudo apt install openjdk-11-jdk ssh -y
+sudo apt install openjdk-8-jdk openssh-server openssh-client -y
 java -version
 ========================
 
@@ -75,6 +77,91 @@ Enter same passphrase again:
 Check the password:
 ssh localhost
 =========================
+
+Ubuntu: 26.04.1 LTS
+Hadoop: 3.3.6 installed in /usr/local/hadoop
+Java: OpenJDK 8
+
+Check your Hadoop installation?
+echo $HADOOP_HOME
+
+hadoop version
+
+java -version
+readlink -f "$(which java)" - check java location
+
+jps
+
+Check your Hadoop directory:
+ls /usr/local/hadoop
+
+
+sudo systemctl enable --now ssh
+sudo systemctl status ssh
+
+Set Java and Hadoop environment variables :
+readlink -f "$(which java)" - Find your Java installation:
+/usr/lib/jvm/java-8-openjdk-amd64 - For your existing setup, the Java home should be:
+
+nano ~/.bashrc - Open your .bashrc file:
+----Add these lines at the bottom:
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+export HADOOP_HOME=/usr/local/hadoop
+export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
+export PATH=$PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
+Ctrl+ O Ctrl+X
+
+source ~/.bashrc
+verify
+echo $JAVA_HOME
+echo $HADOOP_HOME
+
+Configure Hadoop's Java environment:
+nano $HADOOP_HOME/etc/hadoop/hadoop-env.sh            - Open the Hadoop environment file
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64    - Add or update this line
+save and exit
+
+Configure core-site.xml:
+nano $HADOOP_HOME/etc/hadoop/core-site.xml
+
+Replace its contents with:
+<?xml version="1.0"?>
+<configuration>
+    <property>
+        <name>fs.defaultFS</name>
+        <value>hdfs://localhost:9000</value>
+    </property>
+</configuration>
+
+Configure hdfs-site.xml:
+nano $HADOOP_HOME/etc/hadoop/hdfs-site.xml    - Open the file  
+
+Use the following configuration:
+<?xml version="1.0"?>
+<configuration>
+    <property>
+        <name>dfs.replication</name>
+        <value>1</value>
+    </property>
+
+    <property>
+        <name>dfs.namenode.name.dir</name>
+        <value>file:///usr/local/hadoop/data/namenode</value>
+    </property>
+
+    <property>
+        <name>dfs.datanode.data.dir</name>
+        <value>file:///usr/local/hadoop/data/datanode</value>
+    </property>
+</configuration>
+
+Purpose of these properties:
+- dfs.replication = 1: Stores one replica of each data block because you're running a single-node setup.
+- dfs.namenode.name.dir: Stores NameNode metadata.
+- dfs.datanode.data.dir: Stores HDFS data blocks.
+Important: Each XML file must contain exactly one <configuration> root element. Avoid adding a second root element, as this causes XML parsing errors.
+
+
 Start the storage layer (HDFS):
    start-dfs.sh
 Start the job-running layer (YARN):
