@@ -12,22 +12,22 @@ SSH is a network protocol that allows you to connect to and control another comp
 
 Important SSH commands
 Command	Purpose
-ssh localhost	Connect to your own computer
-ssh username@192.168.1.10	Connect to another computer using its IP address
-sudo systemctl status ssh	Check whether the SSH service is running
-sudo systemctl start ssh	Start the SSH service
-sudo systemctl restart ssh	Restart the SSH service
-exit	Disconnect from the SSH session
+ssh localhost	               -Connect to your own computer
+ssh username@192.168.1.10	   -Connect to another computer using its IP address
+sudo systemctl status ssh	   -Check whether the SSH service is running
+sudo systemctl start ssh	   -Start the SSH service
+sudo systemctl restart ssh   	-Restart the SSH service
+exit	                        -Disconnect from the SSH session
 
-steps to passwordless 
+Steps to passwordless:
 ssh -V
 sudo systemctl status ssh
 sudo apt update
 sudo apt install openssh-server openssh-client
 sudo systemctl enable --now ssh
 
-Generate SSH keys
-ssh-keygen -t rsa -P "" -f ~/.ssh/id_rsa
+Generate SSH keys:
+ssh-keygen -t rsa -P "" -f ~/.ssh/sshkey_rsa   or      ssh-keygen -t rsa
 
 Explanation:
 - ssh-keygen — Generates SSH keys.
@@ -36,7 +36,7 @@ Explanation:
 - -f ~/.ssh/id_rsa — Specifies where to save the keys.
 
 This generates two files:
-File	Purpose
+File	Purpose:
 ~/.ssh/id_rsa	      Private key; keep it secret
 ~/.ssh/id_rsa.pub	   Public key; can be shared with the destination account
 
@@ -44,15 +44,36 @@ If you already have SSH keys, don't overwrite them. Check first:
 ls -la ~/.ssh
 cd ~/.ssh
 
+If you entering this command
+ssh-keygen -t rsa
+Enter file in which to save the key: "enter or give filename ssh_keypair with location"
+**Press Enter to use the default location.
+Enter passphrase (empty for no passphrase): "enter"
+**Press Enter twice to leave the passphrase empty. This allows automated SSH login without entering a key passphrase.
+
+mv ~/id_rsa ~/.ssh/
+mv ~/id_rsa.pub ~/.ssh/
+cd ..
 Set SSH permissions
 chmod 700 ~/.ssh
 chmod 600 ~/.ssh/authorized_keys
 chmod 600 ~/.ssh/id_rsa
 chmod 644 ~/.ssh/id_rsa.pub
 
+Test passwordless authentication
+ssh localhost
 
+#Protect your SSH private key with a passphrase:
+ssh-keygen -p -f ~/.ssh/id_rsa
 
+Enter old passphrase:
+**If your current private key has no passphrase, press Enter.
+Enter new passphrase:
+**Type the new passphrase you want.
+Enter same passphrase again:
 
+Check the password:
+ssh localhost
 =========================
 Start the storage layer (HDFS):
    start-dfs.sh
