@@ -20,7 +20,9 @@ airflow db init
 Step 5: Change port using command:
 Method 1: export AIRFLOW__API__PORT=8081
 Method 2: Change port permanently
-nano ~/airflow/airflow.cfg
+nano ~/airflow/airflow.cfg  
+
+under [api] change port number 8080
 
 Step 6: Start Airflow:
 airflow standalone
