@@ -21,8 +21,12 @@ Step 5: Change port using command:
 Method 1: export AIRFLOW__API__PORT=8081
 Method 2: Change port permanently
 nano ~/airflow/airflow.cfg  
+--under [api] change port number 8080
+simple_auth_manager_users = (username_here):admin
 
-under [api] change port number 8080
+Password check/change:
+cat /home/thanieskumar/airflow/simple_auth_manager_passwords.json.generated
+
 
 Step 6: Start Airflow:
 airflow standalone
